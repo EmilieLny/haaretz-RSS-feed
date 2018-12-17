@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+
+<head>
+<title>Haaretz</title>
+    <script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=PT+Serif" rel="stylesheet">
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+
+    <div id="articles">
+        <h1>Haaretz Israel Culture</h1>
+        <button>GET ARTICLES</button>
+        <div class="error"></div>
+        <div class="articles"></div>
+    </div>
+
+    <script>
+
+        $("#articles button").eq(0).click(function () {
+            this.innerHTML = ('R E F R E S H')
+            $.ajax({
+                type: "GET",
+                url: "http://localhost:7000/getArticles",
+            }).done(function (data) {
+                $(".articles").empty()
+                var title = document.createElement("h2");
+                title.innerHTML = ("Articles list:");
+                $(".articles").append(title);
+
+                var div = document.createElement("div");
+                div.className = 'wrappArticles'
+                $(".articles").append(div);
+                var count = 0 
+                var articles = JSON.parse(data);
+                articles.forEach(function (element) {
+                    count ++;
+                    
+                    var img = document.createElement("img");
+                    img.src = element['image']
+
+                    var h3 = document.createElement("h3");
+                    h3.innerHTML = element['title']
+
+                    var link = document.createElement("a");
+                    link.href = element['link'];
+                    link.append(h3)
+                    link.append(img)
+
+                    $(".wrappArticles").append($("<div class ='arti'/>").html(link));
+                });
+            });
+        });
+
+</script>
+</body>
+
+</html>
